@@ -1,24 +1,46 @@
 using UnityEngine;
+using System.Collections;
 
 public class OrderMenu : MonoBehaviour
 {
     public GameObject shapeOne;
     public GameObject shapeTwo;
     public GameObject shapeThree;
-    public Vector3 spawnPosition;     
 
-    public void spawnObjectOne()
+    public Transform spawnPoint;
+    public float spawnDelay = 0.5f;
+
+    private bool canSpawn = true;
+
+    public void SpawnObjectOne() 
+    { 
+        TrySpawn(shapeOne); 
+    }
+    public void SpawnObjectTwo()  
     {
-        Instantiate(shapeOne, spawnPosition, Quaternion.identity);
+        TrySpawn(shapeTwo); 
+    }
+    public void SpawnObjectThree()
+    {
+        TrySpawn(shapeThree);
     }
 
-    public void spawnObjectTwo()
+    void TrySpawn(GameObject shape)
     {
-        Instantiate(shapeTwo, spawnPosition, Quaternion.identity);
+        if (!canSpawn) return;             
+        StartCoroutine(SpawnWithCooldown(shape));
     }
 
-    public void spawnObjectThree()
+    IEnumerator SpawnWithCooldown(GameObject shape)
     {
-        Instantiate(shapeThree, spawnPosition, Quaternion.identity);
+        canSpawn = false;
+
+        yield return new WaitForSeconds(spawnDelay);
+
+        if (shape != null && spawnPoint != null)
+            Instantiate(shape, spawnPoint.position, Quaternion.identity);
+
+        yield return new WaitForSeconds(spawnDelay);
+        canSpawn = true;
     }
 }
