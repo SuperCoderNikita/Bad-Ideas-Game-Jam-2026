@@ -7,7 +7,7 @@ public class PlayerConfigs : MonoBehaviour
     public float speed;
     private float horizontalInput;
     private Rigidbody2D rb2d;
-    bool isOnFloor = false;
+    int jumps = 0;
 
     void Start()
     {
@@ -18,10 +18,10 @@ public class PlayerConfigs : MonoBehaviour
     {
         horizontalInput = Input.GetAxisRaw("Horizontal");
 
-        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButton(0)) && isOnFloor == true)
+        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButton(0)) && jumps <= 1)
         {
             rb2d.linearVelocity = Vector2.up * 10;
-            isOnFloor = false;
+            jumps += 1;
         }
     }
 
@@ -34,7 +34,7 @@ public class PlayerConfigs : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Floor"))
         {
-            isOnFloor = true;
+            jumps = 0;
         }
     }
 }
