@@ -18,7 +18,7 @@ public class PlayerConfigs : MonoBehaviour
     {
         horizontalInput = Input.GetAxisRaw("Horizontal");
 
-        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButton(0)) && jumps <= 1)
+        if ((Input.GetKeyDown(KeyCode.Space)) && jumps <= 1)
         {
             rb2d.linearVelocity = Vector2.up * 10;
             jumps += 1;
