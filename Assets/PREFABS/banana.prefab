@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4036919045580845815}
   - component: {fileID: 2024382164363091218}
   - component: {fileID: 6652500796192219661}
+  - component: {fileID: 3611357230654478550}
   m_Layer: 6
   m_Name: banana
   m_TagString: Object
@@ -164,7 +165,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 1
-  m_Mass: 7
+  m_Mass: 0.78499115
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_GravityScale: 1
@@ -179,3 +180,15 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &3611357230654478550
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7270655342170345307}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69c3958652ba24e47b321041015e8b7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'

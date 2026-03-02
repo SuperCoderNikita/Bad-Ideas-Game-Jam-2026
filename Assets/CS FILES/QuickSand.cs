@@ -3,67 +3,51 @@ using UnityEngine;
 
 public class QuickSand : MonoBehaviour
 {
-    public float baseSinkSpeed = 0.2f;   
-    public float massMultiplier = 0.05f; 
-    public float maxSinkSpeed = 3f;     
+    public float sinkSpeed = 0.1f;   
+    public LayerMask sinkableLayers;
 
     private List<Rigidbody2D> bodiesInside = new List<Rigidbody2D>();
+    private Dictionary<Rigidbody2D, float> originalGravity = new Dictionary<Rigidbody2D, float>();
 
     void FixedUpdate()
     {
-        foreach (var rb in bodiesInside)
+        foreach (Rigidbody2D rb in bodiesInside)
         {
             if (rb == null) continue;
 
-            float effectiveMass = GetStackMass(rb);
-
-            float sinkSpeed = baseSinkSpeed + (effectiveMass * massMultiplier);
-            sinkSpeed = Mathf.Min(sinkSpeed, maxSinkSpeed);
-
-            Vector2 newPos = rb.position + Vector2.down * sinkSpeed * Time.fixedDeltaTime;
-            rb.MovePosition(newPos);
+            Vector2 velocity = rb.linearVelocity;
+            velocity.y = -sinkSpeed;  
+            rb.linearVelocity = velocity;
         }
     }
-
-
-    float GetStackMass(Rigidbody2D baseBody)
-    {
-        float totalMass = baseBody.mass;
-
-        Bounds baseBounds = baseBody.GetComponent<Collider2D>().bounds;
-
-        foreach (var other in bodiesInside)
-        {
-            if (other == baseBody || other == null) continue;
-
-            Bounds otherBounds = other.GetComponent<Collider2D>().bounds;
-
-            bool isAbove =
-                otherBounds.min.y >= baseBounds.max.y - 0.05f; 
-
-            bool overlapsX =
-                otherBounds.max.x > baseBounds.min.x &&
-                otherBounds.min.x < baseBounds.max.x;
-
-            if (isAbove && overlapsX)
-                totalMass += other.mass;
-        }
-
-        return totalMass;
-    }
-
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        if ((sinkableLayers.value & (1 << other.gameObject.layer)) == 0)
+            return;
+
         Rigidbody2D rb = other.attachedRigidbody;
-        if (rb != null && !bodiesInside.Contains(rb))
-            bodiesInside.Add(rb);
+        if (rb == null || bodiesInside.Contains(rb))
+            return;
+
+        bodiesInside.Add(rb);
+
+        originalGravity[rb] = rb.gravityScale;
+        rb.gravityScale = 0f;
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
+        if ((sinkableLayers.value & (1 << other.gameObject.layer)) == 0)
+            return;
+
         Rigidbody2D rb = other.attachedRigidbody;
-        if (rb != null)
-            bodiesInside.Remove(rb);
+        if (rb == null || !bodiesInside.Contains(rb))
+            return;
+
+        bodiesInside.Remove(rb);
+
+        rb.gravityScale = originalGravity[rb];
+        originalGravity.Remove(rb);
     }
 }

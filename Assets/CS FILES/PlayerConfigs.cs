@@ -4,12 +4,14 @@ using UnityEngine.InputSystem;
 public class PlayerConfigs : MonoBehaviour
 {
     public float speed = 5f;
+    public float actualSpeed;
+    public float jumpHeigt = 3f;
+    public Animator anim;
 
     private Rigidbody2D rb2d;
     private Vector2 moveInput;
     private int jumps = 0;
 
-    [Header("Pickup")]
     public Transform objectHoldPoint;
     public float pickupRadius = 1.2f;
     public LayerMask pickupLayer;
@@ -23,11 +25,14 @@ public class PlayerConfigs : MonoBehaviour
         rb2d = GetComponent<Rigidbody2D>();
         if (pickupPrompt != null)
             pickupPrompt.SetActive(false);
+        actualSpeed = 0f;
+        
     }
 
     void Update()
     {
         DetectNearbyObject();
+        anim.SetFloat("speed", Mathf.Abs(actualSpeed));
     }
 
 
@@ -129,13 +134,14 @@ public class PlayerConfigs : MonoBehaviour
     public void OnMove(InputValue value)
     {
         moveInput = value.Get<Vector2>();
+        actualSpeed = 1f;
     }
 
     public void OnJump(InputValue value)
     {
         if (jumps <= 1)
         {
-            rb2d.linearVelocity = Vector2.up * 10;
+            rb2d.linearVelocity = Vector2.up * jumpHeigt;
             jumps++;
         }
     }
