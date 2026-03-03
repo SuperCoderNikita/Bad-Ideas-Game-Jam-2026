@@ -7,7 +7,7 @@ public class WorldInverter : MonoBehaviour
 
     public void FlipWorld()
     {
-        Physics.gravity *= -1;
+        Physics2D.gravity *= -1;
         StartCoroutine(RotateWorld());
     }
 

@@ -134,7 +134,19 @@ public class PlayerConfigs : MonoBehaviour
     public void OnMove(InputValue value)
     {
         moveInput = value.Get<Vector2>();
-        actualSpeed = 1f;
+
+        if (moveInput.x != 0)
+        {
+            actualSpeed = Mathf.Abs(moveInput.x);
+
+            Vector2 scale = transform.localScale;
+            scale.x = Mathf.Sign(moveInput.x) * Mathf.Abs(scale.x);
+            transform.localScale = scale;
+        }
+        else
+        {
+            actualSpeed = 0f;
+        }
     }
 
     public void OnJump(InputValue value)

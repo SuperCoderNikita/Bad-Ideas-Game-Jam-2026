@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class CircuitBreaker : MonoBehaviour
 {
@@ -10,15 +11,13 @@ public class CircuitBreaker : MonoBehaviour
 
     void Update()
     {
-        if (playerInRange && Input.GetKeyDown(KeyCode.E))
+        if (playerInRange && Keyboard.current.eKey.wasPressedThisFrame)
         {
             breakerMenu.SetActive(true);
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
@@ -27,7 +26,7 @@ public class CircuitBreaker : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    private void OnTriggerExit2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
@@ -39,8 +38,6 @@ public class CircuitBreaker : MonoBehaviour
     public void OnFlipButtonPressed()
     {
         breakerMenu.SetActive(false);
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
 
         worldInverter.FlipWorld();
     }
