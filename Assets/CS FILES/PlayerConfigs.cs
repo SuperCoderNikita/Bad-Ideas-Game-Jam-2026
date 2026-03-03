@@ -151,9 +151,19 @@ public class PlayerConfigs : MonoBehaviour
 
     public void OnJump(InputValue value)
     {
+        if (!value.isPressed)
+            return;
+
         if (jumps <= 1)
         {
-            rb2d.linearVelocity = Vector2.up * jumpHeigt;
+            Vector2 gravityDir = Physics2D.gravity.normalized;
+            Vector2 jumpDir = -gravityDir;
+
+            rb2d.linearVelocity = new Vector2(
+                rb2d.linearVelocity.x,
+                jumpDir.y * jumpHeigt
+            );
+
             jumps++;
         }
     }
