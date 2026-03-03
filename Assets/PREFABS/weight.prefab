@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3768845463961846903}
   - component: {fileID: 2251194846643597527}
   - component: {fileID: 1757486988925337926}
+  - component: {fileID: 802739742738754461}
   m_Layer: 6
   m_Name: weight
   m_TagString: Object
@@ -176,3 +177,15 @@ PolygonCollider2D:
       - {x: -0.1008303, y: 0.11859785}
       - {x: -0.13908671, y: -0.043549374}
   m_UseDelaunayMesh: 1
+--- !u!114 &802739742738754461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 937567393179500259}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69c3958652ba24e47b321041015e8b7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IgnorePlayerGroundCollision

@@ -6,11 +6,13 @@ public class PlayerConfigs : MonoBehaviour
     public float speed = 5f;
     public float actualSpeed;
     public float jumpHeigt = 3f;
+    public float throwForce = 8f;
+    private int jumps = 0;
     public Animator anim;
 
     private Rigidbody2D rb2d;
     private Vector2 moveInput;
-    private int jumps = 0;
+
 
     public Transform objectHoldPoint;
     public float pickupRadius = 1.2f;
@@ -112,23 +114,34 @@ public class PlayerConfigs : MonoBehaviour
     }
 
 
-    void Drop()
+void Drop()
+{
+    if (heldObject == null)
+        return;
+
+    heldObject.transform.SetParent(null);
+
+    var rb = heldObject.GetComponent<Rigidbody2D>();
+    if (rb != null)
     {
-        if (heldObject == null)
-            return;
+        rb.bodyType = RigidbodyType2D.Dynamic;
 
-        heldObject.transform.SetParent(null);
+        rb.linearVelocity = Vector2.zero;
+        rb.angularVelocity = 0f;
 
-        var rb = heldObject.GetComponent<Rigidbody2D>();
-        if (rb != null)
-            rb.bodyType = RigidbodyType2D.Dynamic;
+        float facingDir = Mathf.Sign(transform.localScale.x);
 
-        var col = heldObject.GetComponent<Collider2D>();
-        if (col != null)
-            col.enabled = true;
+        Vector2 throwDirection = new Vector2(facingDir, 0.5f).normalized;
 
-        heldObject = null;
+        rb.AddForce(throwDirection * throwForce, ForceMode2D.Impulse);
     }
+
+    var col = heldObject.GetComponent<Collider2D>();
+    if (col != null)
+        col.enabled = true;
+
+    heldObject = null;
+}
 
 
     public void OnMove(InputValue value)
@@ -142,6 +155,7 @@ public class PlayerConfigs : MonoBehaviour
             Vector2 scale = transform.localScale;
             scale.x = Mathf.Sign(moveInput.x) * Mathf.Abs(scale.x);
             transform.localScale = scale;
+
         }
         else
         {
