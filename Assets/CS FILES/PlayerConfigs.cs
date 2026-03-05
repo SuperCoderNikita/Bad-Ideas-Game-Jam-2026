@@ -4,39 +4,94 @@ using UnityEngine.InputSystem;
 public class PlayerConfigs : MonoBehaviour
 {
     public float speed = 5f;
-    public float actualSpeed;
+    public float sprintMultiplier = 1.8f;
     public float jumpHeigt = 3f;
     public float throwForce = 8f;
-    private int jumps = 0;
+
+    public Transform objectHoldPoint;
+    public float pickupRadius = 1.2f;
+    public LayerMask pickupLayer;
+    public GameObject pickupPrompt;
+
     public Animator anim;
 
     private Rigidbody2D rb2d;
     private Vector2 moveInput;
 
+    private int jumps = 0;
 
-    public Transform objectHoldPoint;
-    public float pickupRadius = 1.2f;
-    public LayerMask pickupLayer;
-    public GameObject pickupPrompt; 
+    private PlayerInput playerInput;
+    private InputAction sprintAction;
+    private bool isSprinting;
+
+
+    public float actualSpeed;
 
     private GameObject heldObject;
-    private GameObject nearbyObject; 
+    private GameObject nearbyObject;
 
     void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
+
+        playerInput = GetComponent<PlayerInput>();
+        if (playerInput != null && playerInput.actions != null)
+            sprintAction = playerInput.actions["Sprint"];
+
         if (pickupPrompt != null)
             pickupPrompt.SetActive(false);
+
         actualSpeed = 0f;
-        
+        isSprinting = false;
     }
 
     void Update()
     {
+        isSprinting = sprintAction != null && sprintAction.IsPressed();
+
         DetectNearbyObject();
-        anim.SetFloat("speed", Mathf.Abs(actualSpeed));
+
+        if (anim != null)
+        {
+            anim.SetFloat("speed", Mathf.Abs(actualSpeed));
+            anim.SetBool("isSprinting", isSprinting);
+        }
     }
 
+
+    public void OnMove(InputValue value)
+    {
+        moveInput = value.Get<Vector2>();
+
+        if (moveInput.x != 0)
+        {
+            Vector2 scale = transform.localScale;
+            scale.x = Mathf.Sign(moveInput.x) * Mathf.Abs(scale.x);
+            transform.localScale = scale;
+        }
+
+        float sprint = isSprinting ? sprintMultiplier : 1f;
+        actualSpeed = Mathf.Abs(moveInput.x) * sprint;
+    }
+
+    public void OnJump(InputValue value)
+    {
+        if (!value.isPressed)
+            return;
+
+        if (jumps <= 1)
+        {
+            Vector2 gravityDir = Physics2D.gravity.normalized;
+            Vector2 jumpDir = -gravityDir;
+
+            rb2d.linearVelocity = new Vector2(
+                rb2d.linearVelocity.x,
+                jumpDir.y * jumpHeigt
+            );
+
+            jumps++;
+        }
+    }
 
     public void OnInteract(InputValue value)
     {
@@ -49,6 +104,12 @@ public class PlayerConfigs : MonoBehaviour
             TryPickup();
     }
 
+
+    void FixedUpdate()
+    {
+        float currentSpeed = speed * (isSprinting ? sprintMultiplier : 1f);
+        rb2d.linearVelocity = new Vector2(moveInput.x * currentSpeed, rb2d.linearVelocity.y);
+    }
 
     void DetectNearbyObject()
     {
@@ -79,7 +140,6 @@ public class PlayerConfigs : MonoBehaviour
         if (pickupPrompt != null && heldObject == null)
             pickupPrompt.SetActive(true);
     }
-
 
     void TryPickup()
     {
@@ -113,85 +173,52 @@ public class PlayerConfigs : MonoBehaviour
             pickupPrompt.SetActive(false);
     }
 
-
-void Drop()
-{
-    if (heldObject == null)
-        return;
-
-    heldObject.transform.SetParent(null);
-
-    var rb = heldObject.GetComponent<Rigidbody2D>();
-    if (rb != null)
+  void Drop()
     {
-        rb.bodyType = RigidbodyType2D.Dynamic;
+        if (heldObject == null)
+            return;
 
-        rb.linearVelocity = Vector2.zero;
-        rb.angularVelocity = 0f;
+        heldObject.transform.SetParent(null);
 
-        float facingDir = Mathf.Sign(transform.localScale.x);
+        var rb = heldObject.GetComponent<Rigidbody2D>();
+        var col = heldObject.GetComponent<Collider2D>();
 
-        Vector2 throwDirection = new Vector2(facingDir, 0.5f).normalized;
-
-        rb.AddForce(throwDirection * throwForce, ForceMode2D.Impulse);
-    }
-
-    var col = heldObject.GetComponent<Collider2D>();
-    if (col != null)
-        col.enabled = true;
-
-    heldObject = null;
-}
-
-
-    public void OnMove(InputValue value)
-    {
-        moveInput = value.Get<Vector2>();
-
-        if (moveInput.x != 0)
+        if (rb != null)
         {
-            actualSpeed = Mathf.Abs(moveInput.x);
+            rb.bodyType = RigidbodyType2D.Dynamic;
+            rb.linearVelocity = Vector2.zero;
+            rb.angularVelocity = 0f;
+        }
 
-            Vector2 scale = transform.localScale;
-            scale.x = Mathf.Sign(moveInput.x) * Mathf.Abs(scale.x);
-            transform.localScale = scale;
+        if (col != null)
+            col.enabled = true;
+        if (Mathf.Abs(moveInput.x) > 0.01f)
+        {
 
+            if (rb != null)
+            {
+                float facingDir = Mathf.Sign(transform.localScale.x);
+                Vector2 throwDirection = new Vector2(facingDir, 0.5f).normalized;
+                rb.AddForce(throwDirection * throwForce, ForceMode2D.Impulse);
+            }
         }
         else
         {
-            actualSpeed = 0f;
+            Vector3 placePos = transform.position + Vector3.down * 2f; 
+            heldObject.transform.position = placePos;
+          
+            if (rb != null)
+                rb.linearVelocity = Vector2.zero;
         }
-    }
 
-    public void OnJump(InputValue value)
-    {
-        if (!value.isPressed)
-            return;
-
-        if (jumps <= 1)
-        {
-            Vector2 gravityDir = Physics2D.gravity.normalized;
-            Vector2 jumpDir = -gravityDir;
-
-            rb2d.linearVelocity = new Vector2(
-                rb2d.linearVelocity.x,
-                jumpDir.y * jumpHeigt
-            );
-
-            jumps++;
-        }
-    }
-
-    void FixedUpdate()
-    {
-        rb2d.linearVelocity = new Vector2(moveInput.x * speed, rb2d.linearVelocity.y);
+        heldObject = null;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Floor") || collision.gameObject.CompareTag("Object"))
-        {
             jumps = 0;
-        }
     }
+
+
 }

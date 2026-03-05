@@ -3,11 +3,13 @@ using UnityEngine;
 
 public class QuickSand : MonoBehaviour
 {
-    public float sinkSpeed = 0.1f;   
+    public float sinkSpeed = 0.1f;
     public LayerMask sinkableLayers;
 
     private List<Rigidbody2D> bodiesInside = new List<Rigidbody2D>();
+
     private Dictionary<Rigidbody2D, float> originalGravity = new Dictionary<Rigidbody2D, float>();
+    private Dictionary<Rigidbody2D, RigidbodyConstraints2D> originalConstraints = new Dictionary<Rigidbody2D, RigidbodyConstraints2D>();
 
     void FixedUpdate()
     {
@@ -15,9 +17,7 @@ public class QuickSand : MonoBehaviour
         {
             if (rb == null) continue;
 
-            Vector2 velocity = rb.linearVelocity;
-            velocity.y = -sinkSpeed;  
-            rb.linearVelocity = velocity;
+            rb.linearVelocity = new Vector2(0f, -sinkSpeed);
         }
     }
 
@@ -33,7 +33,13 @@ public class QuickSand : MonoBehaviour
         bodiesInside.Add(rb);
 
         originalGravity[rb] = rb.gravityScale;
+        originalConstraints[rb] = rb.constraints;
+
         rb.gravityScale = 0f;
+
+        rb.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
+
+        rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
     }
 
     private void OnTriggerExit2D(Collider2D other)
@@ -49,5 +55,8 @@ public class QuickSand : MonoBehaviour
 
         rb.gravityScale = originalGravity[rb];
         originalGravity.Remove(rb);
+
+        rb.constraints = originalConstraints[rb];
+        originalConstraints.Remove(rb);
     }
 }
