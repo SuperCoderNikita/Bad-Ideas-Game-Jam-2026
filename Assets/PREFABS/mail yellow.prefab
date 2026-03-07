@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 2269278982482976427}
   - component: {fileID: 1137371600091781408}
   - component: {fileID: 6219067139627565561}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: mail yellow
-  m_TagString: Untagged
+  m_TagString: Newsletter
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

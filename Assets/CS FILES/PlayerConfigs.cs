@@ -192,8 +192,6 @@ public class PlayerConfigs : MonoBehaviour
 
         if (col != null)
             col.enabled = true;
-        if (Mathf.Abs(moveInput.x) > 0.01f)
-        {
 
             if (rb != null)
             {
@@ -201,15 +199,7 @@ public class PlayerConfigs : MonoBehaviour
                 Vector2 throwDirection = new Vector2(facingDir, 0.5f).normalized;
                 rb.AddForce(throwDirection * throwForce, ForceMode2D.Impulse);
             }
-        }
-        else
-        {
-            Vector3 placePos = transform.position + Vector3.down * 2f; 
-            heldObject.transform.position = placePos;
-          
-            if (rb != null)
-                rb.linearVelocity = Vector2.zero;
-        }
+        
 
         heldObject = null;
     }
