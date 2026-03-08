@@ -7,6 +7,9 @@ TagManager:
   - Floor
   - Object
   - Important
+  - Spam
+  - Newsletter
+  - Promotion
   layers:
   - Default
   - TransparentFX
