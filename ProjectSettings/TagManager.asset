@@ -10,6 +10,7 @@ TagManager:
   - Spam
   - Newsletter
   - Promotion
+  - Screwdriver
   layers:
   - Default
   - TransparentFX

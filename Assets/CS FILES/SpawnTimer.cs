@@ -4,27 +4,41 @@ using UnityEngine;
 
 public class SpawnTimer : MonoBehaviour
 {
-
-    public Transform[] spawnPoints;
     public List<GameObject> mail;
-    public float spawnDelay;
+
+    public float spawnDelay = 2f;
+    public float decreaseAmount = 0.05f;
+
+    public float minX;
+    public float maxX;
+    public float minY;
+    public float maxY;
+
     void Start()
     {
-        InvokeRepeating("spawn", spawnDelay, spawnDelay);
+        StartCoroutine(SpawnLoop());
     }
 
-
-    void Update()
+    IEnumerator SpawnLoop()
     {
-        
-    }
+        while (mail.Count > 0)
+        {
+            spawn();
 
+            yield return new WaitForSeconds(spawnDelay);
+
+            spawnDelay = Mathf.Max(0.1f, spawnDelay - decreaseAmount);
+        }
+    }
 
     void spawn()
     {
-        Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
+        float x = Random.Range(minX, maxX);
+        float y = Random.Range(minY, maxY);
 
-        Instantiate(mail[0], spawnPoint.position, transform.rotation);
+        Vector2 spawnPos = new Vector2(x, y);
+
+        Instantiate(mail[0], spawnPos, Quaternion.identity);
 
         mail.RemoveAt(0);
     }

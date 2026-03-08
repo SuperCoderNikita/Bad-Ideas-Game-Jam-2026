@@ -8,6 +8,11 @@ public class EmailOpener : MonoBehaviour
 
     private bool playerInRange = false;
 
+    void Start()
+    {    
+        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Falling Object"));
+    }
+
     void Update()
     {
         if (playerInRange && Keyboard.current != null && Keyboard.current.qKey.wasPressedThisFrame)

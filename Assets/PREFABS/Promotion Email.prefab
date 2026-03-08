@@ -152,7 +152,7 @@ GameObject:
   - component: {fileID: 2651681775705125577}
   - component: {fileID: 2380076325863604667}
   m_Layer: 3
-  m_Name: mail green
+  m_Name: Promotion Email
   m_TagString: Promotion
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -168,7 +168,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1.22, y: 3.15, z: 0}
-  m_LocalScale: {x: 0.34694085, y: 0.5401, z: 1}
+  m_LocalScale: {x: 3, y: 3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5224284681187572389}
@@ -223,12 +223,12 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: f9a69fac87fcc284184b08e41138d5c6, type: 3}
-  m_Color: {r: 0.050980397, g: 0.9960785, b: 0, a: 1}
+  m_Sprite: {fileID: -8367194007954382172, guid: e4539075ca901354a8e90500f4d987ce, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.31, y: 0.21}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -267,17 +267,17 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.0027317554, y: -0.0013658106}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
-    newSize: {x: 1, y: 1}
+    oldSize: {x: 0.31, y: 0.21}
+    newSize: {x: 0.31, y: 0.21}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.31159887, y: 0.21052423}
   m_EdgeRadius: 0
 --- !u!50 &6589485883014978020
 Rigidbody2D:
@@ -354,17 +354,17 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.004097596, y: -0.0013658442}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
-    newSize: {x: 1, y: 1}
+    oldSize: {x: 0.31, y: 0.21}
+    newSize: {x: 0.31, y: 0.21}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.27608624, y: 0.1832068}
   m_EdgeRadius: 0
 --- !u!1 &2180068957008238086
 GameObject:
