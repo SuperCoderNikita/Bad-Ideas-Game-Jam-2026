@@ -11,6 +11,7 @@ TagManager:
   - Newsletter
   - Promotion
   - Screwdriver
+  - boarder
   layers:
   - Default
   - TransparentFX

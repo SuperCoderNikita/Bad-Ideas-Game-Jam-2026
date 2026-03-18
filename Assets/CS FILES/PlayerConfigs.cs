@@ -43,6 +43,7 @@ public class PlayerConfigs : MonoBehaviour
 
         actualSpeed = 0f;
         isSprinting = false;
+        anim.SetBool("isJumping", false);
     }
 
     void Update()
@@ -79,11 +80,12 @@ public class PlayerConfigs : MonoBehaviour
         if (!value.isPressed)
             return;
 
+
         if (jumps <= 1)
         {
             Vector2 gravityDir = Physics2D.gravity.normalized;
             Vector2 jumpDir = -gravityDir;
-
+            anim.SetBool("isJumping", true);
             rb2d.linearVelocity = new Vector2(
                 rb2d.linearVelocity.x,
                 jumpDir.y * jumpHeigt
@@ -208,6 +210,7 @@ public class PlayerConfigs : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Floor") || collision.gameObject.CompareTag("Object"))
             jumps = 0;
+            anim.SetBool("isJumping", false); 
     }
 
 
