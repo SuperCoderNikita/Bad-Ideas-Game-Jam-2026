@@ -5,6 +5,7 @@ public class StatusQuoteEditor : MonoBehaviour
 {
     public GameObject pressEText;
     public GameObject breakerMenu;
+    public SpawnTimer spawnTimer;
 
     private bool playerInRange = false;
     private bool hasScrewdriver = false;
@@ -53,5 +54,6 @@ public class StatusQuoteEditor : MonoBehaviour
     public void editStatusQuote()
     {
         quoteCount.statusQuote = 1f;
+        spawnTimer.mail.Clear();
     }
 }
