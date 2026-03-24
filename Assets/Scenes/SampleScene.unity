@@ -460,16 +460,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerConfigs
   speed: 5
-  actualSpeed: 0
+  sprintMultiplier: 1.8
   jumpHeigt: 7
   throwForce: 8
-  anim: {fileID: 230921327}
   objectHoldPoint: {fileID: 338782086}
   pickupRadius: 1.2
   pickupLayer:
     serializedVersion: 2
     m_Bits: 72
   pickupPrompt: {fileID: 1805176360}
+  anim: {fileID: 230921327}
+  actualSpeed: 0
 --- !u!61 &230921323
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -669,10 +670,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1084659528}
   - {fileID: 678447801}
-  - {fileID: 230921326}
   - {fileID: 495089663}
+  - {fileID: 1084659528}
+  - {fileID: 230921326}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &338782085
@@ -3477,16 +3478,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   speed: 10
-  actualSpeed: 0
+  sprintMultiplier: 1.8
   jumpHeigt: 3
   throwForce: 8
-  anim: {fileID: 0}
   objectHoldPoint: {fileID: 338782086}
   pickupRadius: 1
   pickupLayer:
     serializedVersion: 2
     m_Bits: 72
   pickupPrompt: {fileID: 1805176360}
+  anim: {fileID: 0}
+  actualSpeed: 0
 --- !u!114 &1376971128
 MonoBehaviour:
   m_ObjectHideFlags: 0
